@@ -16,6 +16,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'dotenv-rails'
 
+gem 'materialize-sass'
+
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
