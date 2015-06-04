@@ -1,17 +1,18 @@
 <div class="row">
 	
 	<% @series.each do |serie| %>
-		<div class="col s3">
-			<div class="card medium">
-				<div class="card-image waves-effect waves-block waves-light">
-					<img src="<%= serie.poster %>">
-					<span class="card-title"></span>
-				</div>
-				<div class="card-content">
-					<span class="card-title activator grey-text text-darken-4"><%= serie.title %></span>
+		<%= link_to serie do %>
+			<div class="col s3">
+				<div class="card medium">
+					<div class="card-image waves-effect waves-block waves-light">
+						<img src="<%= serie.poster %>">
+						<span class="card-title"></span>
+					</div>
+					<div class="card-content">
+						<span class="card-title activator grey-text text-darken-4"><%= serie.title %></span>
+					</div>
 				</div>
 			</div>
-		</div>
-		
+		<% end %>
 	<% end %>
 </div>
