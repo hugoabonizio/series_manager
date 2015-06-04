@@ -18,6 +18,8 @@ gem 'dotenv-rails'
 
 gem 'materialize-sass'
 
+gem 'mysql2'
+
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'

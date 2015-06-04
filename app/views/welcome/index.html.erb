@@ -1,2 +1,17 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+<div class="row">
+	
+	<% @series.each do |serie| %>
+		<div class="col s3">
+			<div class="card medium">
+				<div class="card-image waves-effect waves-block waves-light">
+					<img src="<%= serie.poster %>">
+					<span class="card-title"></span>
+				</div>
+				<div class="card-content">
+					<span class="card-title activator grey-text text-darken-4"><%= serie.title %></span>
+				</div>
+			</div>
+		</div>
+		
+	<% end %>
+</div>
