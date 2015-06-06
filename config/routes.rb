@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
-  get 'series/index'
-
-  get 'series/show'
-
 	root 'welcome#index'
-	devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
+  post 'episodes/watch'
 	resources :series, only: [:index, :show]
+	
+	devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
+	
 	
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

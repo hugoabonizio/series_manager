@@ -19,8 +19,18 @@
 			<% @seasons.each_pair do |number, season| %>
 				<li>
 					<div class="collapsible-header active">
-						<input type="checkbox" id="<%= "season_#{number}" %>" />
-						<label for="<%= "season_#{number}" %>"><strong class="black-text">Temporada <%= number %></strong></label>
+						<% if user_signed_in? %>
+							<input type="checkbox" id="<%= "season_#{number}" %>" />
+						<% end %>
+						<label for="<%= "season_#{number}" %>">
+							<strong class="black-text">
+								<% if number == 0 %>
+									Especiais
+								<% else %>
+									Temporada <%= number %>
+								<% end %>
+							</strong>
+						</label>
 						<i class="mdi-hardware-keyboard-arrow-down right"></i>
 					</div>
 					<div class="collapsible-body">
@@ -28,8 +38,10 @@
 							<div class="row">
 								<% season.sort { |a, b| a.episode <=> b.episode }.each do |episode| %>
 								<div class="col s11 offset-s1">
-									<input type="checkbox" id="<%= "#{episode.episode}_#{episode.title}" %>" />
-									<label for="<%= "#{episode.episode}_#{episode.title}" %>"><%= "#{episode.episode} - #{episode.title}" %></label>
+									<% if user_signed_in? %>
+									<input type="checkbox" id="<%= episode.id %>" class="episode_check" <% if @watched.include? episode.id %>checked="checked"<% end %> />
+									<% end %>
+									<label for="<%= episode.id %>"><%= "#{episode.episode} - #{episode.title}" %></label>
 								</div>
 								<% end %>
 							</div>
@@ -42,9 +54,49 @@
 </div>
 
 <% content_for :js do %>
+<script>
 $(document).ready(function(){
 	$('.collapsible').collapsible({
 		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	});
+	
+	var watched_queue = []
+	var saving = false;
+	var save = function () {
+		if (!saving) {
+			saving = true;
+			setTimeout(function () {
+				$.ajax({
+					url: '/episodes/watch',
+					type: 'POST',
+					beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+					data: {'episodes': watched_queue, 'serie': <%= @serie.id %>},
+					success: function (res) {
+						watched_queue = [];
+						saving = false;
+					},
+					error: function (res) {
+						document.body.innerHTML = res.responseText;
+					}
+				});
+			}, 100);
+		} else {
+			setTimeout(function () {
+				if (saving) {
+					saving = false;
+					save();
+				} else {
+				}
+			}, 100);
+		}
+	};
+	$('.episode_check').click(function(){
+		watched_queue.push($(this).attr('id'));
+		console.log(watched_queue);
+		save();
+		console.log($(this).attr('id'));
+	});
+	
 });
+</script>
 <% end %>
