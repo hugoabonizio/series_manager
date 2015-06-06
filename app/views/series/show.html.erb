@@ -16,12 +16,12 @@
 	
 	<div class="col s7">
 		<ul class="collapsible" data-collapsible="expandable">
-			<% @seasons.each_with_index do |season, number| %>
+			<% @seasons.each_pair do |number, season| %>
 				<li>
 					<div class="collapsible-header <% 'active' if number == 0 or number == 1 %>">Temporada <%= number %></div>
 					<div class="collapsible-body">
 						<ul>
-							<% season[1].each do |episode| %>
+							<% season.sort { |a, b| a.episode <=> b.episode }.each do |episode| %>
 								<li><%= "#{episode.episode} - #{episode.title}" %></li>
 							<% end %>
 						</ul>
