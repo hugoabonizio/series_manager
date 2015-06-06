@@ -3,6 +3,7 @@ class SeriesController < ApplicationController
   end
 
   def show
-		@serie = Serie.joins(:episodes).group(:season).find(params[:id])
+		@serie = Serie.joins(:episodes).order('episodes.episode').find(params[:id])
+		@seasons = Serie.group_episodes(@serie)
   end
 end

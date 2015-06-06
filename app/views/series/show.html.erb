@@ -13,22 +13,29 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="col s7">
-		<table class="bordered">
-			<thead>
-				<tr>
-					<th>Temporada</th>
-					<th>Episódio</th>
-					<th>Título</th>
-				</tr>
-			</thead>
-			<% @serie.episodes.each do |ep| %>
-				<tr>
-					<td><%= ep.season %></td>
-					<td><%= ep.episode %></td>
-					<td><%= ep.title %></td>
-				</tr>
+		<ul class="collapsible" data-collapsible="expandable">
+			<% @seasons.each_with_index do |season, number| %>
+				<li>
+					<div class="collapsible-header <% 'active' if number == 0 or number == 1 %>">Temporada <%= number %></div>
+					<div class="collapsible-body">
+						<ul>
+							<% season[1].each do |episode| %>
+								<li><%= "#{episode.episode} - #{episode.title}" %></li>
+							<% end %>
+						</ul>
+					</div>
+				</li>
 			<% end %>
-		</table>
+		</ul>
 	</div>
 </div>
+
+<% content_for :js do %>
+$(document).ready(function(){
+	$('.collapsible').collapsible({
+		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	});
+});
+<% end %>
