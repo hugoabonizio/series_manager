@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+	get 'search' => 'search#search'
+
 	root 'welcome#index'
   post 'episodes/watch'
 	resources :series, only: [:index, :show]

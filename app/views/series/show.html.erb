@@ -20,7 +20,7 @@
 				<li>
 					<div class="collapsible-header active">
 						<% if user_signed_in? %>
-							<input type="checkbox" id="<%= "season_#{number}" %>" />
+							<input type="checkbox" class="season_check" id="<%= "season_#{number}" %>" />
 						<% end %>
 						<label for="<%= "season_#{number}" %>">
 							<strong class="black-text">
@@ -39,7 +39,7 @@
 								<% season.sort { |a, b| a.episode <=> b.episode }.each do |episode| %>
 								<div class="col s11 offset-s1">
 									<% if user_signed_in? %>
-									<input type="checkbox" id="<%= episode.id %>" class="episode_check" <% if @watched.include? episode.id %>checked="checked"<% end %> />
+									<input type="checkbox" id="<%= episode.id %>" class="episode_check <%= "season_#{number}" %>" <% if @watched.include? episode.id %>checked="checked"<% end %> />
 									<% end %>
 									<label for="<%= episode.id %>"><%= "#{episode.episode} - #{episode.title}" %></label>
 								</div>
@@ -90,11 +90,25 @@ $(document).ready(function(){
 			}, 100);
 		}
 	};
-	$('.episode_check').click(function(){
+	
+	$('.episode_check').change(function () {
 		watched_queue.push($(this).attr('id'));
 		console.log(watched_queue);
 		save();
 		console.log($(this).attr('id'));
+	});
+	
+	$('.season_check').click(function () {
+		var id = $(this).attr('id');
+		$('.' + id).click(); // TODO find a better way
+	});
+	
+	$('.season_check').each(function (index, value) {
+		var count = $('.' + $(this).attr('id')).length;
+		var count_checked = $('.' + $(this).attr('id') + ':checked').length
+		if (count == count_checked) {
+			$(this).attr('checked', true);
+		}
 	});
 	
 });
