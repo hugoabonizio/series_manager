@@ -18,13 +18,22 @@
 		<ul class="collapsible" data-collapsible="expandable">
 			<% @seasons.each_pair do |number, season| %>
 				<li>
-					<div class="collapsible-header <% 'active' if number == 0 or number == 1 %>">Temporada <%= number %></div>
+					<div class="collapsible-header active">
+						<input type="checkbox" id="<%= "season_#{number}" %>" />
+						<label for="<%= "season_#{number}" %>"><strong class="black-text">Temporada <%= number %></strong></label>
+						<i class="mdi-hardware-keyboard-arrow-down right"></i>
+					</div>
 					<div class="collapsible-body">
-						<ul>
-							<% season.sort { |a, b| a.episode <=> b.episode }.each do |episode| %>
-								<li><%= "#{episode.episode} - #{episode.title}" %></li>
-							<% end %>
-						</ul>
+						<form action="#">
+							<div class="row">
+								<% season.sort { |a, b| a.episode <=> b.episode }.each do |episode| %>
+								<div class="col s11 offset-s1">
+									<input type="checkbox" id="<%= "#{episode.episode}_#{episode.title}" %>" />
+									<label for="<%= "#{episode.episode}_#{episode.title}" %>"><%= "#{episode.episode} - #{episode.title}" %></label>
+								</div>
+								<% end %>
+							</div>
+						</form>
 					</div>
 				</li>
 			<% end %>

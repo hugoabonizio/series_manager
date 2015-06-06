@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150604192620) do
+ActiveRecord::Schema.define(version: 20150606172048) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer "serie_id", limit: 4
@@ -48,4 +48,16 @@ ActiveRecord::Schema.define(version: 20150604192620) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "watcheds", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "episode_id", limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "watcheds", ["episode_id"], name: "index_watcheds_on_episode_id", using: :btree
+  add_index "watcheds", ["user_id"], name: "index_watcheds_on_user_id", using: :btree
+
+  add_foreign_key "watcheds", "episodes"
+  add_foreign_key "watcheds", "users"
 end
