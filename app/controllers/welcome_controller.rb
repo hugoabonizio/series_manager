@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-		@series = Serie.order("RAND()").limit(4)
+		@series_blocks = Serie.order("RAND()").limit(12).each_slice(4).to_a
   end
 end
