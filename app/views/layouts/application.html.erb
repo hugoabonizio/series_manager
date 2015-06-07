@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Series</title>
+	<title><%= title %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -9,26 +9,29 @@
 <body>
 	
 	<header class="header indigo z-depth-1" style="text-align: center;">
-		<h2 style="margin: 0px; padding: 30px; color: #eceff1;">sjsoidjsid</h2>
+		<h2 style="margin: 0px; padding: 30px; color: #eceff1;">Nome do site</h2>
 		<nav class="indigo">
 			<div class="nav-wrapper row">
 				<div class="col s3 offset-s5">
 					<ul>
 						<li><a href="/">Início</a></li>
 						<li><a href="/series">Séries</a></li>
-						<li><a href="/me">Perfil</a></li>
+						<%  if user_signed_in? %>
+							<li><a href="/me">Perfil</a></li>
+						<% else %>
+							<li><%= link_to 'Perfil', user_omniauth_authorize_path(:facebook) %></li>
+						<% end %>
 					</ul>
 				</div>
 				<div class="col s3">
 					<% if user_signed_in? %>
 						<span class="valign">
 							Bem vindo(a), <%= current_user.name %>!
-							
 						</span>
 					<img src="<%= current_user.image %>" class="circle responsive-img" style="width: 40px; position: absolute; top: 10px;">
 					<% else %>
 						<%= link_to user_omniauth_authorize_path(:facebook) do %>
-							<span class="amber-text text-accent-3">Entrar com Facebook</span>
+							<span class="amber-text text-accent-3">Entrar com Facebook...</span>
 						<% end %>
 					<% end %>
 				</div>
