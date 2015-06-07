@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150606172048) do
+ActiveRecord::Schema.define(version: 20150607190817) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer "serie_id", limit: 4
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 20150606172048) do
     t.integer "episode",  limit: 4
     t.integer "season",   limit: 4
   end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer  "serie_id",   limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "favorites", ["serie_id"], name: "index_favorites_on_serie_id", using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "series", force: :cascade do |t|
     t.string "title",          limit: 200
@@ -61,7 +71,9 @@ ActiveRecord::Schema.define(version: 20150606172048) do
   add_index "watcheds", ["series_id"], name: "index_watcheds_on_series_id", using: :btree
   add_index "watcheds", ["user_id"], name: "index_watcheds_on_user_id", using: :btree
 
+  add_foreign_key "favorites", "series"
+  add_foreign_key "favorites", "users"
   add_foreign_key "watcheds", "episodes"
-  add_foreign_key "watcheds", "series"
+  add_foreign_key "watcheds", "series", column: "series_id"
   add_foreign_key "watcheds", "users"
 end
