@@ -7,9 +7,21 @@
 			</div>
 			<div class="card-content">
 				<span class="card-title activator grey-text text-darken-4"><%= @serie.original_title %> (<%= @serie.title %>)</span>
-				<a href="#" class="btn-large btn-floating red lighten-3 right" style="margin: 10px;">
-					<i class="mdi-action-favorite-outline"></i>
-				</a>
+				<% if user_signed_in? %>
+					<% if @favorite %>
+						<%= link_to series_favorite_path(@serie), id: 'favorite_btn', class: 'btn-large btn-floating red right', method: 'post', remote: true do %>
+							<i class="mdi-action-favorite"></i>
+						<% end %>
+					<% else %>
+						<%= link_to series_favorite_path(@serie), id: 'favorite_btn', class: 'btn-large btn-floating red lighten-3 right', method: 'post', remote: true do %>
+							<i class="mdi-action-favorite-outline"></i>
+						<% end %>
+					<% end %>
+				<% else %>
+					<%= link_to '/login', id: 'favorite_btn', class: 'btn-large btn-floating red lighten-3 right', method: 'post', remote: true do %>
+						<i class="mdi-action-favorite-outline"></i>
+					<% end %>
+				<% end %>
 			</div>
 		</div>
 	</div>

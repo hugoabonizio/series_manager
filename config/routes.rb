@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 	root 'welcome#index'
   post 'episodes/watch'
 	resources :series, only: [:index, :show]
+	post 'series/favorite/:serie_id' => 'series#favorite', as: 'series_favorite'
+	
+	get '/login' => 'welcome#login'
 	
 	devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
 	

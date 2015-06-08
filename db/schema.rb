@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150607190817) do
     t.datetime "updated_at",           null: false
   end
 
+  add_index "favorites", ["serie_id", "user_id"], name: "serie_id", unique: true, using: :btree
   add_index "favorites", ["serie_id"], name: "index_favorites_on_serie_id", using: :btree
   add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
@@ -53,7 +54,6 @@ ActiveRecord::Schema.define(version: 20150607190817) do
     t.string   "provider",               limit: 255
     t.string   "uid",                    limit: 255
     t.string   "image",                  limit: 255
-    t.integer  "series_id",              limit: 4
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -62,18 +62,19 @@ ActiveRecord::Schema.define(version: 20150607190817) do
   create_table "watcheds", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
     t.integer  "episode_id", limit: 4
-    t.integer  "series_id",  limit: 4
+    t.integer  "serie_id",   limit: 4
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
 
   add_index "watcheds", ["episode_id"], name: "index_watcheds_on_episode_id", using: :btree
-  add_index "watcheds", ["series_id"], name: "index_watcheds_on_series_id", using: :btree
+  add_index "watcheds", ["serie_id"], name: "index_watcheds_on_serie_id", using: :btree
+  add_index "watcheds", ["user_id", "episode_id", "serie_id"], name: "user_id", unique: true, using: :btree
   add_index "watcheds", ["user_id"], name: "index_watcheds_on_user_id", using: :btree
 
   add_foreign_key "favorites", "series"
   add_foreign_key "favorites", "users"
   add_foreign_key "watcheds", "episodes"
-  add_foreign_key "watcheds", "series", column: "series_id"
+  add_foreign_key "watcheds", "series"
   add_foreign_key "watcheds", "users"
 end

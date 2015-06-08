@@ -1,0 +1,7 @@
+<% if @result == :create %>
+	$('#favorite_btn').removeClass('lighten-3');
+	$('#favorite_btn i').removeClass('mdi-action-favorite-outline').addClass('mdi-action-favorite');
+<% else %>
+	$('#favorite_btn').addClass('lighten-3');
+	$('#favorite_btn i').removeClass('mdi-action-favorite').addClass('mdi-action-favorite-outline');
+<% end %>
