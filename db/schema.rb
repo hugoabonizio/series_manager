@@ -14,11 +14,15 @@
 ActiveRecord::Schema.define(version: 20150607190817) do
 
   create_table "episodes", force: :cascade do |t|
-    t.integer "serie_id", limit: 4
-    t.string  "title",    limit: 200
-    t.integer "episode",  limit: 4
-    t.integer "season",   limit: 4
+    t.integer  "serie_id",   limit: 4
+    t.string   "title",      limit: 255
+    t.integer  "episode",    limit: 4
+    t.integer  "season",     limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "episodes", ["serie_id"], name: "index_episodes_on_serie_id", using: :btree
 
   create_table "favorites", force: :cascade do |t|
     t.integer  "serie_id",   limit: 4
@@ -27,14 +31,15 @@ ActiveRecord::Schema.define(version: 20150607190817) do
     t.datetime "updated_at",           null: false
   end
 
-  add_index "favorites", ["serie_id", "user_id"], name: "serie_id", unique: true, using: :btree
   add_index "favorites", ["serie_id"], name: "index_favorites_on_serie_id", using: :btree
   add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "series", force: :cascade do |t|
-    t.string "title",          limit: 200
-    t.string "original_title", limit: 200
-    t.string "poster",         limit: 200
+    t.string   "title",          limit: 255
+    t.string   "original_title", limit: 255
+    t.string   "poster",         limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
@@ -69,9 +74,9 @@ ActiveRecord::Schema.define(version: 20150607190817) do
 
   add_index "watcheds", ["episode_id"], name: "index_watcheds_on_episode_id", using: :btree
   add_index "watcheds", ["serie_id"], name: "index_watcheds_on_serie_id", using: :btree
-  add_index "watcheds", ["user_id", "episode_id", "serie_id"], name: "user_id", unique: true, using: :btree
   add_index "watcheds", ["user_id"], name: "index_watcheds_on_user_id", using: :btree
 
+  add_foreign_key "episodes", "series"
   add_foreign_key "favorites", "series"
   add_foreign_key "favorites", "users"
   add_foreign_key "watcheds", "episodes"
