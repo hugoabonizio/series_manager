@@ -17,7 +17,7 @@
 		<br><br><br>
 	</div>
 </div>
-<div class="row series_wrapper">
+<div class="row" style="height: 500px;">
 	<% @series_blocks.each_with_index do |serie_block, index| %>
 		<div class="series_block series_<%= index %>">
 			<% serie_block.each do |serie| %>
@@ -43,17 +43,11 @@
 <script>
 	$(document).ready(function () {
 		var current = 0;
-		var max_height = 0;
-		$('.card').each(function () {
-			console.log($(this).height());
-			if ($(this).height() > max_height) max_height = $(this).height();
-		});
 		console.log(max_height);
 		function change_series() {
 			if (window.change_series_time) clearTimeout(window.change_series_time);
 			var blocks = $('.series_block');
 			$('.series_block').hide();
-			$('.series_wrapper').css('height', max_height + 'px');
 			$('.series_' + current).fadeIn('slow');
 			current++;
 			if (current >= 3) current = 0;
