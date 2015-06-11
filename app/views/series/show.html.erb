@@ -72,47 +72,51 @@ $(document).ready(function () {
 		accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	});
 	
-	var watched_queue = []
+	var watched_queue = [],
+			_queue = [];
+	
 	var saving = false;
 	var save = function () {
-		if (!saving) {
-			saving = true;
-			setTimeout(function () {
-				$.ajax({
-					url: '/episodes/watch',
-					type: 'POST',
-					beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-					data: {'episodes': watched_queue, 'serie': <%= @serie.id %>},
-					success: function (res) {
-						watched_queue = [];
-						saving = false;
-					},
-					error: function (res) {
-						document.body.innerHTML = res.responseText;
-					}
-				});
-			}, 100);
-		} else {
-			setTimeout(function () {
-				if (saving) {
-					saving = false;
-					save();
-				} else {
+		clearTimeout(window.send_queue);
+		window.send_queue = setTimeout(function () {
+			_queue = watched_queue;
+			$.ajax({
+				url: '/episodes/watch',
+				type: 'POST',
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					console.log("Sending: " + JSON.stringify(_queue));
+				},
+				data: {'episodes': _queue, 'serie': <%= @serie.id %>},
+				success: function (res) {
+					_queue = [];
+				},
+				error: function (res) {
+					console.log(res.responseText);
 				}
-			}, 100);
-		}
+			});
+			watched_queue = [];
+			console.log("New queue: " + JSON.stringify(watched_queue));
+		}, 300);
+			
 	};
 	
 	$('.episode_check').change(function () {
 		watched_queue.push($(this).attr('id'));
-		console.log(watched_queue);
+		// console.log(watched_queue);
 		save();
 		console.log($(this).attr('id'));
 	});
 	
 	$('.season_check').click(function () {
 		var id = $(this).attr('id');
-		$('.' + id).click(); // TODO find a better way
+		console.log('.' + id);
+		$('.' + id).each(function () {
+			console.log($(this).attr('checked') != 'checked');
+			if (!$(this).prop('checked')) {
+				$(this).click();
+			}
+		}); // TODO find a better way
 	});
 	
 	$('.season_check').each(function (index, value) {
