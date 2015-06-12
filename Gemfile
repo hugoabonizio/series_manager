@@ -25,8 +25,8 @@ gem 'omniauth-facebook'
 
 gem 'activerecord-import'
 
-# gem 'puma'
-gem 'thin'
+gem 'puma'
+# gem 'thin'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
