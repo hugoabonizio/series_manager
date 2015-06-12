@@ -11,7 +11,7 @@ require_relative '../lib/timeout'
 module Series
   class Application < Rails::Application
 		
-		config.middleware.use TimeoutRestartResquest
+# 		config.middleware.use TimeoutRestartResquest
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

@@ -3,11 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 	
+	config.web_console.whiny_requests = false
+	
 # 	rescue_from Rack::Timeout::RequestTimeoutError, :with => :handle_timeout
 	
   protected
   def handle_timeout(exception)
     ActiveRecord::Base.connection.reset!
-		render html: '<script>'
+		render html: '<script>window.reload();</script>'
 	end
 end

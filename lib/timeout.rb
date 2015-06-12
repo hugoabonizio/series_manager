@@ -7,9 +7,11 @@ class TimeoutRestartResquest
 	
 	def call(env)
 		thr = Thread.new do
+			Rails.logger.debug "Comecou #{env['REQUEST_PATH']}"
       sleep 5 # set this to Unicorn timeout - 1
       unless Thread.current[:done]
-				Rails.logger.warn "DEU TIMEOUT"
+				Rails.logger.debug "DEU TIMEOUT"
+				ActiveRecord::Base.connection.reset!
 				@app.call(env)
       end
     end
