@@ -13,6 +13,7 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 
 gem 'dotenv-rails'
+gem 'rack-timeout'
 
 gem 'materialize-sass'
 
