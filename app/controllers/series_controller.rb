@@ -1,5 +1,6 @@
 class SeriesController < ApplicationController
   def index
+		@series = Serie.page(params[:page]).per(12)
   end
 
   def show
